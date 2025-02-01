@@ -1,0 +1,387 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Online Exam Portal - Kazi Nazrul University</title>
+    <link rel="stylesheet" href="styles.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
+    <style>
+        .exam-container {
+            max-width: 800px;
+            margin: 50px auto;
+            padding: 2rem;
+            background: rgba(255, 255, 255, 0.1);
+            backdrop-filter: blur(10px);
+            border-radius: 15px;
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            color: #fff;
+        }
+
+        .exam-header {
+            text-align: center;
+            margin-bottom: 2rem;
+        }
+
+        .exam-header h2 {
+            color: #fff;
+            margin-bottom: 1rem;
+        }
+
+        .timer {
+            font-size: 1.5rem;
+            color: #ffc107;
+            margin: 1rem 0;
+            text-align: center;
+        }
+
+        .question-container {
+            margin-bottom: 2rem;
+            padding: 1.5rem;
+            background: rgba(255, 255, 255, 0.05);
+            border-radius: 10px;
+        }
+
+        .question {
+            font-size: 1.2rem;
+            margin-bottom: 1rem;
+        }
+
+        .options {
+            display: flex;
+            flex-direction: column;
+            gap: 1rem;
+        }
+
+        .option {
+            padding: 1rem;
+            background: rgba(255, 255, 255, 0.05);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 5px;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+
+        .option:hover {
+            background: rgba(255, 193, 7, 0.1);
+            border-color: #ffc107;
+        }
+
+        .option.selected {
+            background: rgba(255, 193, 7, 0.2);
+            border-color: #ffc107;
+        }
+
+        .navigation-buttons {
+            display: flex;
+            justify-content: space-between;
+            margin-top: 2rem;
+        }
+
+        .nav-btn {
+            padding: 0.8rem 1.5rem;
+            background: #ffc107;
+            color: #000;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: all 0.3s;
+            font-weight: 500;
+        }
+
+        .nav-btn:hover {
+            background: #ffca2c;
+            transform: translateY(-2px);
+        }
+
+        .nav-btn:disabled {
+            background: #ccc;
+            cursor: not-allowed;
+            transform: none;
+        }
+
+        .question-palette {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 0.5rem;
+            margin: 1rem 0;
+            padding: 1rem;
+            background: rgba(255, 255, 255, 0.05);
+            border-radius: 10px;
+        }
+
+        .palette-item {
+            width: 35px;
+            height: 35px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 5px;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+
+        .palette-item.answered {
+            background: #28a745;
+            color: #fff;
+        }
+
+        .palette-item.current {
+            background: #ffc107;
+            color: #000;
+        }
+
+        .palette-item:hover {
+            transform: translateY(-2px);
+        }
+
+        #submit-exam {
+            background: #28a745;
+            width: 100%;
+            margin-top: 1rem;
+        }
+
+        #submit-exam:hover {
+            background: #218838;
+        }
+
+        .exam-info {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 2rem;
+            padding: 1rem;
+            background: rgba(255, 255, 255, 0.05);
+            border-radius: 10px;
+        }
+
+        .info-item {
+            text-align: center;
+        }
+
+        .info-item span {
+            display: block;
+            color: #ffc107;
+            font-size: 1.2rem;
+            font-weight: bold;
+        }
+
+        .info-item label {
+            font-size: 0.9rem;
+            color: rgba(255, 255, 255, 0.8);
+        }
+    </style>
+</head>
+<body>
+    <div class="exam-container">
+        <div class="exam-header">
+            <h2>Online Examination</h2>
+            <div class="exam-info">
+                <div class="info-item">
+                    <span>Web Development</span>
+                    <label>Subject</label>
+                </div>
+                <div class="info-item">
+                    <span>50</span>
+                    <label>Total Marks</label>
+                </div>
+                <div class="info-item">
+                    <span>30</span>
+                    <label>Duration (mins)</label>
+                </div>
+            </div>
+            <div class="timer" id="timer">30:00</div>
+        </div>
+
+        <div class="question-palette" id="questionPalette">
+            <!-- Will be populated by JavaScript -->
+        </div>
+
+        <div class="question-container" id="questionContainer">
+            <!-- Will be populated by JavaScript -->
+        </div>
+
+        <div class="navigation-buttons">
+            <button class="nav-btn" id="prevBtn" onclick="previousQuestion()">
+                <i class="fas fa-arrow-left"></i> Previous
+            </button>
+            <button class="nav-btn" id="nextBtn" onclick="nextQuestion()">
+                Next <i class="fas fa-arrow-right"></i>
+            </button>
+        </div>
+
+        <button class="nav-btn" id="submit-exam" onclick="submitExam()">
+            Submit Exam
+        </button>
+    </div>
+
+    <script>
+        // Sample questions data
+        const questions = [
+            {
+                question: "What does HTML stand for?",
+                options: [
+                    "Hyper Text Markup Language",
+                    "High Tech Modern Language",
+                    "Hyper Transfer Markup Language",
+                    "Hybrid Text Markup Language"
+                ],
+                correctAnswer: 0
+            },
+            {
+                question: "Which of the following is a CSS framework?",
+                options: [
+                    "jQuery",
+                    "Bootstrap",
+                    "Python",
+                    "PHP"
+                ],
+                correctAnswer: 1
+            },
+            {
+                question: "What is JavaScript primarily used for?",
+                options: [
+                    "Database Management",
+                    "Server Configuration",
+                    "Client-side Scripting",
+                    "Network Security"
+                ],
+                correctAnswer: 2
+            }
+            // Add more questions as needed
+        ];
+
+        let currentQuestion = 0;
+        let answers = new Array(questions.length).fill(null);
+        let timeLeft = 30 * 60; // 30 minutes in seconds
+
+        // Initialize the exam
+        function initExam() {
+            displayQuestion();
+            updateQuestionPalette();
+            startTimer();
+        }
+
+        // Display current question
+        function displayQuestion() {
+            const question = questions[currentQuestion];
+            const container = document.getElementById('questionContainer');
+            
+            let html = `
+                <div class="question">
+                    <span>Question ${currentQuestion + 1}:</span> ${question.question}
+                </div>
+                <div class="options">
+            `;
+
+            question.options.forEach((option, index) => {
+                const isSelected = answers[currentQuestion] === index;
+                html += `
+                    <div class="option ${isSelected ? 'selected' : ''}" 
+                         onclick="selectOption(${index})">
+                        ${String.fromCharCode(65 + index)}. ${option}
+                    </div>
+                `;
+            });
+
+            html += '</div>';
+            container.innerHTML = html;
+            updateNavigationButtons();
+        }
+
+        // Update question palette
+        function updateQuestionPalette() {
+            const palette = document.getElementById('questionPalette');
+            palette.innerHTML = '';
+
+            for (let i = 0; i < questions.length; i++) {
+                const item = document.createElement('div');
+                item.className = `palette-item${answers[i] !== null ? ' answered' : ''}${i === currentQuestion ? ' current' : ''}`;
+                item.textContent = i + 1;
+                item.onclick = () => jumpToQuestion(i);
+                palette.appendChild(item);
+            }
+        }
+
+        // Handle option selection
+        function selectOption(optionIndex) {
+            answers[currentQuestion] = optionIndex;
+            displayQuestion();
+            updateQuestionPalette();
+        }
+
+        // Navigation functions
+        function previousQuestion() {
+            if (currentQuestion > 0) {
+                currentQuestion--;
+                displayQuestion();
+                updateQuestionPalette();
+            }
+        }
+
+        function nextQuestion() {
+            if (currentQuestion < questions.length - 1) {
+                currentQuestion++;
+                displayQuestion();
+                updateQuestionPalette();
+            }
+        }
+
+        function jumpToQuestion(index) {
+            currentQuestion = index;
+            displayQuestion();
+            updateQuestionPalette();
+        }
+
+        // Update navigation buttons
+        function updateNavigationButtons() {
+            document.getElementById('prevBtn').disabled = currentQuestion === 0;
+            document.getElementById('nextBtn').disabled = currentQuestion === questions.length - 1;
+        }
+
+        // Timer function
+        function startTimer() {
+            const timerDisplay = document.getElementById('timer');
+            
+            const timer = setInterval(() => {
+                timeLeft--;
+                
+                const minutes = Math.floor(timeLeft / 60);
+                const seconds = timeLeft % 60;
+                
+                timerDisplay.textContent = `${String(minutes).padStart(2, '0')}:${String(seconds).padStart(2, '0')}`;
+                
+                if (timeLeft <= 0) {
+                    clearInterval(timer);
+                    submitExam();
+                }
+            }, 1000);
+        }
+
+        // Submit exam
+        function submitExam() {
+            let score = 0;
+            answers.forEach((answer, index) => {
+                if (answer === questions[index].correctAnswer) {
+                    score++;
+                }
+            });
+
+            // Store results in localStorage
+            const results = {
+                score: score,
+                totalQuestions: questions.length,
+                answers: answers,
+                timeSpent: 1800 - timeLeft // in seconds
+            };
+            localStorage.setItem('examResults', JSON.stringify(results));
+
+            // Redirect to results page
+            window.location.href = 'exam-results.html';
+        }
+
+        // Initialize exam when page loads
+        window.onload = initExam;
+    </script>
+</body>
+</html>

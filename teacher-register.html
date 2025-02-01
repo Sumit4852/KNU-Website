@@ -1,0 +1,351 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Teacher Registration - Kazi Nazrul University</title>
+    <link rel="stylesheet" href="styles.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <style>
+        .register-container {
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background: linear-gradient(rgba(0,0,0,0.5), rgba(0,0,0,0.5)), url('https://images.unsplash.com/photo-1524178232363-1fb2b075b655?ixlib=rb-1.2.1&auto=format&fit=crop&w=1350&q=80');
+            background-size: cover;
+            background-position: center;
+            padding: 2rem;
+        }
+
+        .register-box {
+            background: rgba(255, 255, 255, 0.95);
+            padding: 2rem;
+            border-radius: 10px;
+            box-shadow: 0 0 20px rgba(0,0,0,0.2);
+            width: 100%;
+            max-width: 800px;
+        }
+
+        .register-header {
+            text-align: center;
+            margin-bottom: 2rem;
+        }
+
+        .register-header img {
+            width: 80px;
+            margin-bottom: 1rem;
+        }
+
+        .register-header h2 {
+            color: #e83e8c;
+        }
+
+        .register-form {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 1.5rem;
+        }
+
+        @media (max-width: 768px) {
+            .register-form {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        .form-group {
+            position: relative;
+        }
+
+        .form-group.full-width {
+            grid-column: 1 / -1;
+        }
+
+        .form-group i {
+            position: absolute;
+            left: 15px;
+            top: 50%;
+            transform: translateY(-50%);
+            color: #666;
+        }
+
+        .form-group input,
+        .form-group select,
+        .form-group textarea {
+            width: 100%;
+            padding: 12px 40px;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+            font-size: 1rem;
+            transition: border-color 0.3s;
+        }
+
+        .form-group textarea {
+            padding: 12px;
+            min-height: 100px;
+            resize: vertical;
+        }
+
+        .form-group input:focus,
+        .form-group select:focus,
+        .form-group textarea:focus {
+            border-color: #e83e8c;
+            outline: none;
+        }
+
+        .register-btn {
+            background: #e83e8c;
+            color: white;
+            padding: 12px;
+            border: none;
+            border-radius: 5px;
+            font-size: 1rem;
+            cursor: pointer;
+            transition: background 0.3s;
+            grid-column: 1 / -1;
+        }
+
+        .register-btn:hover {
+            background: #d4317c;
+        }
+
+        .login-link {
+            text-align: center;
+            margin-top: 1rem;
+            grid-column: 1 / -1;
+        }
+
+        .login-link a {
+            color: #6f42c1;
+            text-decoration: none;
+        }
+
+        .back-to-home {
+            position: absolute;
+            top: 20px;
+            left: 20px;
+            color: white;
+            text-decoration: none;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            font-size: 1rem;
+            transition: color 0.3s;
+        }
+
+        .back-to-home:hover {
+            color: #e83e8c;
+        }
+
+        .file-upload {
+            padding: 12px 12px 12px 40px !important;
+        }
+
+        /* Modal Styles */
+        .modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0,0,0,0.5);
+            z-index: 1000;
+        }
+
+        .modal-content {
+            position: relative;
+            background: white;
+            margin: 15% auto;
+            padding: 2rem;
+            width: 90%;
+            max-width: 500px;
+            border-radius: 10px;
+            text-align: center;
+        }
+
+        .close-btn {
+            position: absolute;
+            right: 20px;
+            top: 10px;
+            font-size: 24px;
+            cursor: pointer;
+            color: #666;
+        }
+
+        .confirmation-details {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 1rem;
+        }
+
+        .confirmation-details i {
+            font-size: 4rem;
+            color: #e83e8c;
+            margin-bottom: 1rem;
+        }
+
+        .detail-item {
+            background: #f8f9fa;
+            padding: 1rem;
+            border-radius: 5px;
+            width: 100%;
+        }
+
+        .info-text {
+            color: #666;
+            font-size: 0.9rem;
+            margin: 1rem 0;
+        }
+
+        .modal-btn {
+            background: #6f42c1;
+            color: white;
+            padding: 0.8rem 2rem;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: background 0.3s;
+        }
+
+        .modal-btn:hover {
+            background: #553098;
+        }
+    </style>
+</head>
+<body>
+    <a href="index.html" class="back-to-home">
+        <i class="fas fa-arrow-left"></i> Back to Home
+    </a>
+
+    <div class="register-container">
+        <div class="register-box">
+            <div class="register-header">
+                <img src="https://i.ibb.co/LxmYLzP/knu-logo.jpg" alt="KNU Logo">
+                <h2>Teacher Registration</h2>
+            </div>
+            <form class="register-form" id="teacherRegisterForm">
+                <div class="form-group">
+                    <i class="fas fa-user"></i>
+                    <input type="text" id="firstName" placeholder="First Name" required>
+                </div>
+                <div class="form-group">
+                    <i class="fas fa-user"></i>
+                    <input type="text" id="lastName" placeholder="Last Name" required>
+                </div>
+                <div class="form-group">
+                    <i class="fas fa-envelope"></i>
+                    <input type="email" id="email" placeholder="Email Address" required>
+                </div>
+                <div class="form-group">
+                    <i class="fas fa-phone"></i>
+                    <input type="tel" id="phone" placeholder="Phone Number" required>
+                </div>
+                <div class="form-group">
+                    <i class="fas fa-building"></i>
+                    <select id="department" required>
+                        <option value="">Select Department</option>
+                        <option value="cs">Computer Science</option>
+                        <option value="physics">Physics</option>
+                        <option value="chemistry">Chemistry</option>
+                        <option value="mathematics">Mathematics</option>
+                        <option value="english">English</option>
+                        <option value="history">History</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <i class="fas fa-graduation-cap"></i>
+                    <select id="designation" required>
+                        <option value="">Select Designation</option>
+                        <option value="professor">Professor</option>
+                        <option value="associate">Associate Professor</option>
+                        <option value="assistant">Assistant Professor</option>
+                        <option value="lecturer">Lecturer</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <i class="fas fa-university"></i>
+                    <input type="text" id="qualification" placeholder="Highest Qualification" required>
+                </div>
+                <div class="form-group">
+                    <i class="fas fa-briefcase"></i>
+                    <input type="number" id="experience" placeholder="Years of Experience" required>
+                </div>
+                <div class="form-group">
+                    <i class="fas fa-lock"></i>
+                    <input type="password" id="password" placeholder="Password" required>
+                </div>
+                <div class="form-group">
+                    <i class="fas fa-lock"></i>
+                    <input type="password" id="confirmPassword" placeholder="Confirm Password" required>
+                </div>
+                <div class="form-group full-width">
+                    <i class="fas fa-file-alt"></i>
+                    <input type="file" id="resume" class="file-upload" accept=".pdf,.doc,.docx" required>
+                </div>
+                <div class="form-group full-width">
+                    <i class="fas fa-home"></i>
+                    <textarea id="address" placeholder="Full Address" required></textarea>
+                </div>
+                <div class="form-group full-width">
+                    <i class="fas fa-book"></i>
+                    <textarea id="specialization" placeholder="Areas of Specialization" required></textarea>
+                </div>
+                <button type="submit" class="register-btn">Register</button>
+                <div class="login-link">
+                    Already registered? <a href="teacher-login.html">Login here</a>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <script>
+        document.getElementById('teacherRegisterForm').addEventListener('submit', function(e) {
+            e.preventDefault();
+            
+            // Basic password match validation
+            const password = document.getElementById('password').value;
+            const confirmPassword = document.getElementById('confirmPassword').value;
+            
+            if (password !== confirmPassword) {
+                alert('Passwords do not match!');
+                return;
+            }
+            
+            // Get form data
+            const firstName = document.getElementById('firstName').value;
+            const lastName = document.getElementById('lastName').value;
+            const email = document.getElementById('email').value;
+            const department = document.getElementById('department');
+            const designation = document.getElementById('designation');
+            const qualification = document.getElementById('qualification').value;
+            const experience = document.getElementById('experience').value;
+            
+            // Generate a unique application ID
+            const timestamp = new Date().getTime();
+            const randomNum = Math.floor(Math.random() * 1000);
+            const applicationId = `TCH${timestamp}${randomNum}`;
+            
+            // Store application ID and other details in localStorage for later use
+            localStorage.setItem('pendingRegistration', JSON.stringify({
+                applicationId,
+                firstName,
+                lastName,
+                email,
+                department: department.options[department.selectedIndex].text,
+                designation: designation.options[designation.selectedIndex].text,
+                qualification,
+                experience,
+                type: 'teacher'
+            }));
+
+            // Simulate sending OTP to email
+            alert('An OTP has been sent to your email address for verification.');
+            
+            // Redirect to OTP verification page
+            window.location.href = `otp-verification.html?email=${encodeURIComponent(email)}&type=teacher`;
+        });
+    </script>
+</body>
+</html>

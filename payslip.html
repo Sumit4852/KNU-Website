@@ -1,0 +1,297 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Payslip Generator - KNU</title>
+    <link rel="stylesheet" href="styles.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js"></script>
+</head>
+<body>
+    <div class="dashboard-container">
+        <div class="dashboard-header">
+            <h1><i class="fas fa-file-invoice-dollar"></i> Payslip Generator</h1>
+            <div class="header-actions">
+                <button class="btn-dynamic btn-primary" onclick="window.location.href='index.html'">
+                    <i class="fas fa-home"></i> Home
+                </button>
+            </div>
+        </div>
+
+        <div class="payslip-generator">
+            <div class="input-section">
+                <h2><i class="fas fa-calculator"></i> Salary Details</h2>
+                <div class="input-grid">
+                    <div class="input-group">
+                        <label>Employee Name</label>
+                        <input type="text" id="empName" class="form-input" value="Dr. Sarah Johnson">
+                    </div>
+                    <div class="input-group">
+                        <label>Employee ID</label>
+                        <input type="text" id="empId" class="form-input" value="TCH001">
+                    </div>
+                    <div class="input-group">
+                        <label>Department</label>
+                        <select id="department" class="form-input">
+                            <option value="Computer Science">Computer Science</option>
+                            <option value="Physics">Physics</option>
+                            <option value="Chemistry">Chemistry</option>
+                            <option value="Mathematics">Mathematics</option>
+                        </select>
+                    </div>
+                    <div class="input-group">
+                        <label>Designation</label>
+                        <select id="designation" class="form-input">
+                            <option value="Professor">Professor</option>
+                            <option value="Associate Professor">Associate Professor</option>
+                            <option value="Assistant Professor">Assistant Professor</option>
+                        </select>
+                    </div>
+                    <div class="input-group">
+                        <label>Basic Salary (₹)</label>
+                        <input type="number" id="basicSalary" class="form-input" value="50000">
+                    </div>
+                    <div class="input-group">
+                        <label>Working Days</label>
+                        <input type="number" id="workingDays" class="form-input" value="22">
+                    </div>
+                    <div class="input-group">
+                        <label>Overtime Hours</label>
+                        <input type="number" id="overtimeHours" class="form-input" value="10">
+                    </div>
+                    <div class="input-group">
+                        <label>Month & Year</label>
+                        <input type="month" id="salaryMonth" class="form-input" value="2025-02">
+                    </div>
+                </div>
+                <div class="action-buttons">
+                    <button class="btn-dynamic btn-success btn-lg" onclick="calculatePayslip()">
+                        <i class="fas fa-calculator"></i>
+                        <span>Calculate Payslip</span>
+                    </button>
+                    <button class="btn-dynamic btn-warning btn-lg" onclick="resetForm()">
+                        <i class="fas fa-redo"></i>
+                        <span>Reset Form</span>
+                    </button>
+                </div>
+            </div>
+
+            <div id="payslipPreview" class="payslip-preview" style="display: none;">
+                <div class="preview-header">
+                    <h2><i class="fas fa-file-alt"></i> Payslip Preview</h2>
+                    <div class="preview-actions">
+                        <button class="btn-dynamic btn-primary" onclick="downloadPayslip()">
+                            <i class="fas fa-download"></i> Download PDF
+                        </button>
+                        <button class="btn-dynamic btn-info" onclick="printPayslip()">
+                            <i class="fas fa-print"></i> Print
+                        </button>
+                        <button class="btn-dynamic btn-secondary" onclick="sharePayslip()">
+                            <i class="fas fa-share-alt"></i> Share
+                        </button>
+                    </div>
+                </div>
+                
+                <div id="payslipContent" class="payslip-content">
+                    <div class="university-header">
+                        <h1>Kazi Nazrul University</h1>
+                        <p>Asansol, West Bengal, India</p>
+                        <h2>Salary Slip</h2>
+                        <p id="payslipMonth">February 2025</p>
+                    </div>
+
+                    <div class="employee-info">
+                        <div class="info-row">
+                            <div class="info-group">
+                                <label>Employee Name:</label>
+                                <span id="displayEmpName">Dr. Sarah Johnson</span>
+                            </div>
+                            <div class="info-group">
+                                <label>Employee ID:</label>
+                                <span id="displayEmpId">TCH001</span>
+                            </div>
+                        </div>
+                        <div class="info-row">
+                            <div class="info-group">
+                                <label>Department:</label>
+                                <span id="displayDepartment">Computer Science</span>
+                            </div>
+                            <div class="info-group">
+                                <label>Designation:</label>
+                                <span id="displayDesignation">Associate Professor</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="salary-details">
+                        <div class="earnings-section">
+                            <h3>Earnings</h3>
+                            <div class="salary-row">
+                                <span>Basic Salary</span>
+                                <span id="displayBasic">₹50,000</span>
+                            </div>
+                            <div class="salary-row">
+                                <span>DA (40%)</span>
+                                <span id="displayDA">₹20,000</span>
+                            </div>
+                            <div class="salary-row">
+                                <span>HRA (20%)</span>
+                                <span id="displayHRA">₹10,000</span>
+                            </div>
+                            <div class="salary-row">
+                                <span>Overtime</span>
+                                <span id="displayOvertime">₹5,000</span>
+                            </div>
+                            <div class="salary-row total">
+                                <span>Total Earnings</span>
+                                <span id="displayTotalEarnings">₹85,000</span>
+                            </div>
+                        </div>
+
+                        <div class="deductions-section">
+                            <h3>Deductions</h3>
+                            <div class="salary-row">
+                                <span>PF (12%)</span>
+                                <span id="displayPF">₹6,000</span>
+                            </div>
+                            <div class="salary-row">
+                                <span>Tax (10%)</span>
+                                <span id="displayTax">₹8,500</span>
+                            </div>
+                            <div class="salary-row">
+                                <span>Professional Tax</span>
+                                <span id="displayProfTax">₹200</span>
+                            </div>
+                            <div class="salary-row total">
+                                <span>Total Deductions</span>
+                                <span id="displayTotalDeductions">₹14,700</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="net-salary">
+                        <div class="salary-row">
+                            <span>Net Salary</span>
+                            <span id="displayNetSalary">₹70,300</span>
+                        </div>
+                    </div>
+
+                    <div class="payslip-footer">
+                        <div class="signature">
+                            <div class="sign-line"></div>
+                            <p>Authorized Signature</p>
+                        </div>
+                        <div class="generated-date">
+                            <p>Generated on: <span id="generatedDate">2025-02-01</span></p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        function calculatePayslip() {
+            // Get input values
+            const empName = document.getElementById('empName').value;
+            const empId = document.getElementById('empId').value;
+            const department = document.getElementById('department').value;
+            const designation = document.getElementById('designation').value;
+            const basicSalary = parseFloat(document.getElementById('basicSalary').value);
+            const workingDays = parseFloat(document.getElementById('workingDays').value);
+            const overtimeHours = parseFloat(document.getElementById('overtimeHours').value);
+            const salaryMonth = document.getElementById('salaryMonth').value;
+
+            // Calculate components
+            const da = basicSalary * 0.4;
+            const hra = basicSalary * 0.2;
+            const overtimeRate = (basicSalary / (22 * 8)) * 1.5;
+            const overtimePay = overtimeRate * overtimeHours;
+            const totalEarnings = basicSalary + da + hra + overtimePay;
+
+            // Calculate deductions
+            const pf = basicSalary * 0.12;
+            const tax = totalEarnings * 0.1;
+            const profTax = 200;
+            const totalDeductions = pf + tax + profTax;
+            const netSalary = totalEarnings - totalDeductions;
+
+            // Update display values
+            document.getElementById('displayEmpName').textContent = empName;
+            document.getElementById('displayEmpId').textContent = empId;
+            document.getElementById('displayDepartment').textContent = department;
+            document.getElementById('displayDesignation').textContent = designation;
+            document.getElementById('displayBasic').textContent = `₹${basicSalary.toLocaleString()}`;
+            document.getElementById('displayDA').textContent = `₹${da.toLocaleString()}`;
+            document.getElementById('displayHRA').textContent = `₹${hra.toLocaleString()}`;
+            document.getElementById('displayOvertime').textContent = `₹${overtimePay.toLocaleString()}`;
+            document.getElementById('displayTotalEarnings').textContent = `₹${totalEarnings.toLocaleString()}`;
+            document.getElementById('displayPF').textContent = `₹${pf.toLocaleString()}`;
+            document.getElementById('displayTax').textContent = `₹${tax.toLocaleString()}`;
+            document.getElementById('displayProfTax').textContent = `₹${profTax.toLocaleString()}`;
+            document.getElementById('displayTotalDeductions').textContent = `₹${totalDeductions.toLocaleString()}`;
+            document.getElementById('displayNetSalary').textContent = `₹${netSalary.toLocaleString()}`;
+
+            // Update month and generated date
+            const monthDate = new Date(salaryMonth);
+            const monthYear = monthDate.toLocaleString('default', { month: 'long', year: 'numeric' });
+            document.getElementById('payslipMonth').textContent = monthYear;
+            document.getElementById('generatedDate').textContent = new Date().toLocaleDateString();
+
+            // Show preview
+            document.getElementById('payslipPreview').style.display = 'block';
+        }
+
+        function downloadPayslip() {
+            const element = document.getElementById('payslipContent');
+            const opt = {
+                margin: 1,
+                filename: `payslip-${document.getElementById('empId').value}.pdf`,
+                image: { type: 'jpeg', quality: 0.98 },
+                html2canvas: { scale: 2 },
+                jsPDF: { unit: 'in', format: 'letter', orientation: 'portrait' }
+            };
+
+            // Add loading state
+            const button = event.currentTarget;
+            button.classList.add('btn-loading');
+
+            html2pdf().set(opt).from(element).save().then(() => {
+                button.classList.remove('btn-loading');
+            });
+        }
+
+        function printPayslip() {
+            window.print();
+        }
+
+        function sharePayslip() {
+            if (navigator.share) {
+                navigator.share({
+                    title: 'Salary Slip',
+                    text: 'Monthly Salary Slip from Kazi Nazrul University',
+                    url: window.location.href
+                })
+                .catch(console.error);
+            } else {
+                const payslipLink = window.location.href;
+                navigator.clipboard.writeText(payslipLink)
+                    .then(() => alert('Payslip link copied to clipboard!'))
+                    .catch(console.error);
+            }
+        }
+
+        function resetForm() {
+            document.getElementById('empName').value = '';
+            document.getElementById('empId').value = '';
+            document.getElementById('department').selectedIndex = 0;
+            document.getElementById('designation').selectedIndex = 0;
+            document.getElementById('basicSalary').value = '';
+            document.getElementById('workingDays').value = '22';
+            document.getElementById('overtimeHours').value = '0';
+            document.getElementById('payslipPreview').style.display = 'none';
+        }
+    </script>
+</body>
+</html>

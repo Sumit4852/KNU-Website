@@ -1,0 +1,551 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Exam Results - Kazi Nazrul University</title>
+    <link rel="stylesheet" href="styles.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
+    <style>
+        .results-container {
+            max-width: 800px;
+            margin: 50px auto;
+            padding: 2rem;
+            background: rgba(255, 255, 255, 0.1);
+            backdrop-filter: blur(10px);
+            border-radius: 15px;
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            color: #fff;
+        }
+
+        .results-header {
+            text-align: center;
+            margin-bottom: 2rem;
+            padding-bottom: 1rem;
+            border-bottom: 2px solid rgba(255, 255, 255, 0.1);
+        }
+
+        .results-header h2 {
+            color: #fff;
+            margin-bottom: 0.5rem;
+        }
+
+        .university-logo {
+            width: 100px;
+            height: 100px;
+            margin: 0 auto 1rem;
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 2.5rem;
+            color: #ffc107;
+        }
+
+        .score-summary {
+            display: flex;
+            justify-content: space-around;
+            margin: 2rem 0;
+            padding: 1.5rem;
+            background: rgba(255, 255, 255, 0.05);
+            border-radius: 10px;
+        }
+
+        .score-item {
+            text-align: center;
+        }
+
+        .score-item .value {
+            font-size: 2rem;
+            font-weight: bold;
+            color: #ffc107;
+            margin-bottom: 0.5rem;
+        }
+
+        .score-item .label {
+            color: rgba(255, 255, 255, 0.8);
+            font-size: 0.9rem;
+        }
+
+        .grade {
+            font-size: 3rem;
+            font-weight: bold;
+            text-align: center;
+            margin: 2rem 0;
+            color: #28a745;
+        }
+
+        .question-review {
+            margin-top: 2rem;
+        }
+
+        .question-item {
+            margin-bottom: 1.5rem;
+            padding: 1rem;
+            background: rgba(255, 255, 255, 0.05);
+            border-radius: 10px;
+        }
+
+        .question-item.correct {
+            border-left: 4px solid #28a745;
+        }
+
+        .question-item.incorrect {
+            border-left: 4px solid #dc3545;
+        }
+
+        .question-text {
+            font-size: 1.1rem;
+            margin-bottom: 1rem;
+        }
+
+        .answer-status {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 0.5rem;
+            background: rgba(255, 255, 255, 0.05);
+            border-radius: 5px;
+        }
+
+        .status-icon {
+            width: 24px;
+            height: 24px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .status-icon.correct {
+            background: #28a745;
+        }
+
+        .status-icon.incorrect {
+            background: #dc3545;
+        }
+
+        .action-buttons {
+            display: flex;
+            gap: 1rem;
+            margin-top: 2rem;
+        }
+
+        .action-btn {
+            flex: 1;
+            padding: 1rem;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            font-weight: 500;
+            transition: all 0.3s;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 0.5rem;
+        }
+
+        .download-btn {
+            background: #28a745;
+            color: #fff;
+        }
+
+        .download-btn:hover {
+            background: #218838;
+            transform: translateY(-2px);
+        }
+
+        .retry-btn {
+            background: #ffc107;
+            color: #000;
+        }
+
+        .retry-btn:hover {
+            background: #ffca2c;
+            transform: translateY(-2px);
+        }
+
+        .share-container {
+            margin-top: 2rem;
+            padding: 1.5rem;
+            background: rgba(255, 255, 255, 0.05);
+            border-radius: 10px;
+        }
+
+        .share-title {
+            font-size: 1.2rem;
+            margin-bottom: 1rem;
+            color: #ffc107;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .share-options {
+            display: flex;
+            gap: 1rem;
+            flex-wrap: wrap;
+        }
+
+        .share-btn {
+            padding: 0.8rem 1.5rem;
+            border-radius: 5px;
+            cursor: pointer;
+            font-weight: 500;
+            transition: all 0.3s;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            color: #fff;
+            text-decoration: none;
+        }
+
+        .share-btn:hover {
+            transform: translateY(-2px);
+        }
+
+        .share-btn.email {
+            background: #ea4335;
+        }
+
+        .share-btn.whatsapp {
+            background: #25d366;
+        }
+
+        .share-btn.telegram {
+            background: #0088cc;
+        }
+
+        .share-btn.copy {
+            background: #6c757d;
+        }
+
+        .share-btn.email:hover {
+            background: #d33426;
+        }
+
+        .share-btn.whatsapp:hover {
+            background: #20bd5a;
+        }
+
+        .share-btn.telegram:hover {
+            background: #0077b3;
+        }
+
+        .share-btn.copy:hover {
+            background: #5a6268;
+        }
+
+        .toast-message {
+            position: fixed;
+            bottom: 20px;
+            left: 50%;
+            transform: translateX(-50%);
+            background: rgba(40, 167, 69, 0.9);
+            color: white;
+            padding: 1rem 2rem;
+            border-radius: 5px;
+            display: none;
+            animation: fadeInOut 2s ease-in-out;
+        }
+
+        @keyframes fadeInOut {
+            0% { opacity: 0; }
+            20% { opacity: 1; }
+            80% { opacity: 1; }
+            100% { opacity: 0; }
+        }
+
+        .qr-code {
+            margin-top: 1rem;
+            text-align: center;
+        }
+
+        .qr-code img {
+            width: 150px;
+            height: 150px;
+            background: white;
+            padding: 10px;
+            border-radius: 10px;
+        }
+
+        @media print {
+            body {
+                background: white;
+                color: black;
+            }
+
+            .results-container {
+                background: white;
+                border: 1px solid #ccc;
+            }
+
+            .action-buttons {
+                display: none;
+            }
+
+            .share-container {
+                display: none;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="results-container">
+        <div class="results-header">
+            <div class="university-logo">
+                <i class="fas fa-university"></i>
+            </div>
+            <h2>Kazi Nazrul University</h2>
+            <p>Examination Results</p>
+        </div>
+
+        <div class="score-summary">
+            <div class="score-item">
+                <div class="value" id="scoreValue">0</div>
+                <div class="label">Score</div>
+            </div>
+            <div class="score-item">
+                <div class="value" id="percentageValue">0%</div>
+                <div class="label">Percentage</div>
+            </div>
+            <div class="score-item">
+                <div class="value" id="timeValue">0:00</div>
+                <div class="label">Time Taken</div>
+            </div>
+        </div>
+
+        <div class="grade" id="gradeValue">A</div>
+
+        <div class="question-review" id="questionReview">
+            <!-- Will be populated by JavaScript -->
+        </div>
+
+        <div class="action-buttons">
+            <button class="action-btn download-btn" onclick="downloadMarksheet()">
+                <i class="fas fa-download"></i> Download Marksheet
+            </button>
+            <button class="action-btn retry-btn" onclick="retryExam()">
+                <i class="fas fa-redo"></i> Try Again
+            </button>
+        </div>
+
+        <div class="share-container">
+            <div class="share-title">
+                <i class="fas fa-share-alt"></i> Share Results
+            </div>
+            <div class="share-options">
+                <button class="share-btn email" onclick="shareViaEmail()">
+                    <i class="fas fa-envelope"></i> Email
+                </button>
+                <button class="share-btn whatsapp" onclick="shareViaWhatsApp()">
+                    <i class="fab fa-whatsapp"></i> WhatsApp
+                </button>
+                <button class="share-btn telegram" onclick="shareViaTelegram()">
+                    <i class="fab fa-telegram-plane"></i> Telegram
+                </button>
+                <button class="share-btn copy" onclick="copyResultLink()">
+                    <i class="fas fa-link"></i> Copy Link
+                </button>
+            </div>
+            <div class="qr-code" id="qrCode">
+                <!-- QR Code will be generated here -->
+            </div>
+        </div>
+
+        <div class="toast-message" id="toastMessage"></div>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/qrcode-generator@1.4.4/qrcode.min.js"></script>
+
+    <script>
+        function getGrade(percentage) {
+            if (percentage >= 90) return 'A+';
+            if (percentage >= 80) return 'A';
+            if (percentage >= 70) return 'B';
+            if (percentage >= 60) return 'C';
+            if (percentage >= 50) return 'D';
+            return 'F';
+        }
+
+        function formatTime(seconds) {
+            const minutes = Math.floor(seconds / 60);
+            const remainingSeconds = seconds % 60;
+            return `${minutes}:${String(remainingSeconds).padStart(2, '0')}`;
+        }
+
+        function displayResults() {
+            const results = JSON.parse(localStorage.getItem('examResults'));
+            if (!results) {
+                window.location.href = 'exam-portal.html';
+                return;
+            }
+
+            const percentage = (results.score / results.totalQuestions) * 100;
+            
+            // Update summary values
+            document.getElementById('scoreValue').textContent = `${results.score}/${results.totalQuestions}`;
+            document.getElementById('percentageValue').textContent = `${percentage.toFixed(1)}%`;
+            document.getElementById('timeValue').textContent = formatTime(results.timeSpent);
+            document.getElementById('gradeValue').textContent = getGrade(percentage);
+
+            // Get questions from the previous page
+            const questions = [
+                {
+                    question: "What does HTML stand for?",
+                    options: [
+                        "Hyper Text Markup Language",
+                        "High Tech Modern Language",
+                        "Hyper Transfer Markup Language",
+                        "Hybrid Text Markup Language"
+                    ],
+                    correctAnswer: 0
+                },
+                {
+                    question: "Which of the following is a CSS framework?",
+                    options: [
+                        "jQuery",
+                        "Bootstrap",
+                        "Python",
+                        "PHP"
+                    ],
+                    correctAnswer: 1
+                },
+                {
+                    question: "What is JavaScript primarily used for?",
+                    options: [
+                        "Database Management",
+                        "Server Configuration",
+                        "Client-side Scripting",
+                        "Network Security"
+                    ],
+                    correctAnswer: 2
+                }
+            ];
+
+            // Display question review
+            const reviewContainer = document.getElementById('questionReview');
+            questions.forEach((question, index) => {
+                const userAnswer = results.answers[index];
+                const isCorrect = userAnswer === question.correctAnswer;
+
+                const questionElement = document.createElement('div');
+                questionElement.className = `question-item ${isCorrect ? 'correct' : 'incorrect'}`;
+                questionElement.innerHTML = `
+                    <div class="question-text">
+                        <strong>Question ${index + 1}:</strong> ${question.question}
+                    </div>
+                    <div class="answer-status">
+                        <div>
+                            <div>Your Answer: ${userAnswer !== null ? question.options[userAnswer] : 'Not answered'}</div>
+                            ${!isCorrect ? `<div>Correct Answer: ${question.options[question.correctAnswer]}</div>` : ''}
+                        </div>
+                        <div class="status-icon ${isCorrect ? 'correct' : 'incorrect'}">
+                            <i class="fas ${isCorrect ? 'fa-check' : 'fa-times'}"></i>
+                        </div>
+                    </div>
+                `;
+                reviewContainer.appendChild(questionElement);
+            });
+        }
+
+        function retryExam() {
+            localStorage.removeItem('examResults');
+            window.location.href = 'exam-portal.html';
+        }
+
+        function showToast(message) {
+            const toast = document.getElementById('toastMessage');
+            toast.textContent = message;
+            toast.style.display = 'block';
+            setTimeout(() => {
+                toast.style.display = 'none';
+            }, 2000);
+        }
+
+        function generateResultSummary() {
+            const results = JSON.parse(localStorage.getItem('examResults'));
+            const percentage = (results.score / results.totalQuestions) * 100;
+            const grade = getGrade(percentage);
+
+            return `
+Exam Results - Kazi Nazrul University
+
+Score: ${results.score}/${results.totalQuestions}
+Percentage: ${percentage.toFixed(1)}%
+Grade: ${grade}
+Time Taken: ${formatTime(results.timeSpent)}
+
+View detailed results: ${window.location.href}
+            `;
+        }
+
+        function downloadMarksheet() {
+            // Create a timestamp for the filename
+            const timestamp = new Date().toISOString().replace(/[:.]/g, '-');
+            const filename = `KNU_Exam_Results_${timestamp}.pdf`;
+            
+            // Add filename to the document title for PDF
+            document.title = filename;
+            
+            // Print/Save as PDF
+            window.print();
+            
+            // Reset document title
+            document.title = 'Exam Results - Kazi Nazrul University';
+            
+            showToast('Downloading marksheet...');
+        }
+
+        function shareViaEmail() {
+            const subject = 'Kazi Nazrul University - Exam Results';
+            const body = generateResultSummary();
+            window.location.href = `mailto:?subject=${encodeURIComponent(subject)}&body=${encodeURIComponent(body)}`;
+            showToast('Opening email client...');
+        }
+
+        function shareViaWhatsApp() {
+            const text = generateResultSummary();
+            window.open(`https://wa.me/?text=${encodeURIComponent(text)}`, '_blank');
+            showToast('Opening WhatsApp...');
+        }
+
+        function shareViaTelegram() {
+            const text = generateResultSummary();
+            window.open(`https://t.me/share/url?url=${encodeURIComponent(window.location.href)}&text=${encodeURIComponent(text)}`, '_blank');
+            showToast('Opening Telegram...');
+        }
+
+        function copyResultLink() {
+            const tempInput = document.createElement('input');
+            tempInput.value = window.location.href;
+            document.body.appendChild(tempInput);
+            tempInput.select();
+            document.execCommand('copy');
+            document.body.removeChild(tempInput);
+            showToast('Link copied to clipboard!');
+        }
+
+        function generateQRCode() {
+            const qr = qrcode(0, 'M');
+            qr.addData(window.location.href);
+            qr.make();
+            
+            const qrCodeDiv = document.getElementById('qrCode');
+            qrCodeDiv.innerHTML = `
+                <p style="margin-bottom: 1rem; color: rgba(255,255,255,0.8)">Scan to view results</p>
+                <img src="${qr.createDataURL(4)}" alt="QR Code">
+            `;
+        }
+
+        // Add QR code generation to window.onload
+        const originalOnload = window.onload;
+        window.onload = function() {
+            originalOnload();
+            displayResults();
+            generateQRCode();
+        };
+    </script>
+</body>
+</html>

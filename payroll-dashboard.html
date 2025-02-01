@@ -1,0 +1,286 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Payroll Dashboard - Kazi Nazrul University</title>
+    <link rel="stylesheet" href="styles.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js"></script>
+</head>
+<body>
+    <div class="dashboard-container">
+        <div class="dashboard-header">
+            <h1><i class="fas fa-file-invoice-dollar"></i> Payroll Dashboard</h1>
+            <div class="header-actions">
+                <button class="btn-dynamic btn-primary" onclick="window.location.href='index.html'">
+                    <i class="fas fa-home"></i> Home
+                </button>
+            </div>
+        </div>
+
+        <!-- Payroll Stats -->
+        <div class="stats-container">
+            <div class="stat-card">
+                <i class="fas fa-users"></i>
+                <div class="stat-info">
+                    <h3>Total Teachers</h3>
+                    <p>125</p>
+                </div>
+            </div>
+            <div class="stat-card">
+                <i class="fas fa-money-check-alt"></i>
+                <div class="stat-info">
+                    <h3>Monthly Payroll</h3>
+                    <p>₹8,45,000</p>
+                </div>
+            </div>
+            <div class="stat-card">
+                <i class="fas fa-file-invoice"></i>
+                <div class="stat-info">
+                    <h3>Pending Payslips</h3>
+                    <p>12</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- Payroll Controls -->
+        <div class="payroll-controls">
+            <div class="control-section">
+                <h3><i class="fas fa-filter"></i> Filters</h3>
+                <div class="filter-group">
+                    <div class="filter-item">
+                        <label>Month</label>
+                        <select class="btn-dynamic btn-secondary" id="monthFilter">
+                            <option value="2">February 2025</option>
+                            <option value="1">January 2025</option>
+                            <option value="12">December 2024</option>
+                        </select>
+                    </div>
+                    <div class="filter-item">
+                        <label>Department</label>
+                        <select class="btn-dynamic btn-secondary" id="departmentFilter">
+                            <option value="">All Departments</option>
+                            <option value="cse">Computer Science</option>
+                            <option value="ece">Electronics</option>
+                            <option value="me">Mechanical</option>
+                            <option value="ce">Civil</option>
+                            <option value="physics">Physics</option>
+                            <option value="chemistry">Chemistry</option>
+                        </select>
+                    </div>
+                    <div class="filter-item">
+                        <label>Status</label>
+                        <select class="btn-dynamic btn-secondary" id="statusFilter">
+                            <option value="">All Status</option>
+                            <option value="pending">Pending</option>
+                            <option value="generated">Generated</option>
+                            <option value="paid">Paid</option>
+                        </select>
+                    </div>
+                </div>
+            </div>
+
+            <div class="control-section">
+                <h3><i class="fas fa-cogs"></i> Actions</h3>
+                <div class="action-group">
+                    <div class="action-row">
+                        <button class="btn-dynamic btn-success btn-lg" onclick="generateAllPayslips()">
+                            <i class="fas fa-file-invoice"></i>
+                            <span>Generate All Payslips</span>
+                            <small>Create payslips for all teachers</small>
+                        </button>
+                        <button class="btn-dynamic btn-warning btn-lg" onclick="downloadAllPayslips()">
+                            <i class="fas fa-download"></i>
+                            <span>Download All</span>
+                            <small>Get ZIP file of all payslips</small>
+                        </button>
+                    </div>
+                    <div class="action-row">
+                        <button class="btn-dynamic btn-info btn-lg" onclick="emailAllPayslips()">
+                            <i class="fas fa-envelope"></i>
+                            <span>Email All</span>
+                            <small>Send payslips to teachers</small>
+                        </button>
+                        <button class="btn-dynamic btn-primary btn-lg" onclick="printAllPayslips()">
+                            <i class="fas fa-print"></i>
+                            <span>Print All</span>
+                            <small>Print all payslips</small>
+                        </button>
+                    </div>
+                </div>
+            </div>
+
+            <div class="control-section">
+                <h3><i class="fas fa-tools"></i> Quick Tools</h3>
+                <div class="tools-group">
+                    <button class="btn-dynamic btn-secondary" onclick="calculateTax()">
+                        <i class="fas fa-calculator"></i> Calculate Tax
+                    </button>
+                    <button class="btn-dynamic btn-secondary" onclick="manageAllowances()">
+                        <i class="fas fa-sliders-h"></i> Manage Allowances
+                    </button>
+                    <button class="btn-dynamic btn-secondary" onclick="viewReports()">
+                        <i class="fas fa-chart-bar"></i> View Reports
+                    </button>
+                    <button class="btn-dynamic btn-secondary" onclick="exportData()">
+                        <i class="fas fa-file-export"></i> Export Data
+                    </button>
+                </div>
+            </div>
+        </div>
+
+        <!-- Payroll Table -->
+        <div class="payroll-table">
+            <table>
+                <thead>
+                    <tr>
+                        <th>ID</th>
+                        <th>Teacher</th>
+                        <th>Department</th>
+                        <th>Basic Pay</th>
+                        <th>Allowances</th>
+                        <th>Deductions</th>
+                        <th>Net Salary</th>
+                        <th>Status</th>
+                        <th>Actions</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>TCH001</td>
+                        <td>
+                            <div class="teacher-info">
+                                <img src="https://i.pravatar.cc/150?img=3" alt="Teacher">
+                                <div>
+                                    <strong>Dr. Sarah Johnson</strong>
+                                    <span class="designation">Associate Professor</span>
+                                </div>
+                            </div>
+                        </td>
+                        <td>Computer Science</td>
+                        <td>₹75,000</td>
+                        <td>₹47,500</td>
+                        <td>₹21,700</td>
+                        <td>₹100,800</td>
+                        <td><span class="status-badge present">Generated</span></td>
+                        <td>
+                            <div class="btn-group">
+                                <button class="btn-dynamic btn-success btn-sm" onclick="viewPayslip('TCH001')" title="View Payslip">
+                                    <i class="fas fa-eye"></i>
+                                </button>
+                                <button class="btn-dynamic btn-primary btn-sm" onclick="downloadPayslip('TCH001')" title="Download">
+                                    <i class="fas fa-download"></i>
+                                </button>
+                                <button class="btn-dynamic btn-info btn-sm" onclick="sharePayslip('TCH001')" title="Share">
+                                    <i class="fas fa-share-alt"></i>
+                                </button>
+                            </div>
+                        </td>
+                    </tr>
+                    <!-- Add more teacher rows here -->
+                </tbody>
+            </table>
+        </div>
+
+        <!-- Payslip Modal -->
+        <div id="payslipModal" class="modal">
+            <div class="modal-content payslip-content">
+                <!-- Payslip content will be loaded here -->
+            </div>
+        </div>
+    </div>
+
+    <script>
+        function generateAllPayslips() {
+            const button = event.currentTarget;
+            button.classList.add('btn-loading');
+            
+            setTimeout(() => {
+                button.classList.remove('btn-loading');
+                alert('All payslips generated successfully!');
+                updatePayrollStats();
+            }, 2000);
+        }
+
+        function downloadAllPayslips() {
+            const button = event.currentTarget;
+            button.classList.add('btn-loading');
+            
+            setTimeout(() => {
+                button.classList.remove('btn-loading');
+                alert('All payslips downloaded as ZIP!');
+            }, 2000);
+        }
+
+        function emailAllPayslips() {
+            const button = event.currentTarget;
+            button.classList.add('btn-loading');
+            
+            setTimeout(() => {
+                button.classList.remove('btn-loading');
+                alert('Payslips sent to all teachers via email!');
+            }, 2000);
+        }
+
+        function viewPayslip(teacherId) {
+            const modal = document.getElementById('payslipModal');
+            modal.style.display = 'block';
+            
+            // Load payslip content
+            fetch(`get-payslip.php?id=${teacherId}`)
+                .then(response => response.text())
+                .then(html => {
+                    document.querySelector('.payslip-content').innerHTML = html;
+                })
+                .catch(error => {
+                    console.error('Error:', error);
+                    alert('Failed to load payslip');
+                });
+        }
+
+        function downloadPayslip(teacherId) {
+            const element = document.querySelector('.payslip-content');
+            const opt = {
+                margin: 1,
+                filename: `payslip-${teacherId}.pdf`,
+                image: { type: 'jpeg', quality: 0.98 },
+                html2canvas: { scale: 2 },
+                jsPDF: { unit: 'in', format: 'letter', orientation: 'portrait' }
+            };
+
+            html2pdf().set(opt).from(element).save();
+        }
+
+        function sharePayslip(teacherId) {
+            if (navigator.share) {
+                navigator.share({
+                    title: 'Payslip',
+                    text: 'Monthly Payslip from Kazi Nazrul University',
+                    url: window.location.href
+                })
+                .catch(console.error);
+            } else {
+                const payslipLink = window.location.href;
+                navigator.clipboard.writeText(payslipLink)
+                    .then(() => alert('Payslip link copied to clipboard!'))
+                    .catch(console.error);
+            }
+        }
+
+        // Close modal when clicking the close button
+        document.querySelectorAll('.close').forEach(closeBtn => {
+            closeBtn.onclick = function() {
+                this.closest('.modal').style.display = 'none';
+            }
+        });
+
+        // Close modal when clicking outside
+        window.onclick = function(event) {
+            if (event.target.classList.contains('modal')) {
+                event.target.style.display = 'none';
+            }
+        }
+    </script>
+</body>
+</html>

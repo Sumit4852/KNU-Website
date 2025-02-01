@@ -1,0 +1,386 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Kazi Nazrul University</title>
+    <link rel="stylesheet" href="styles.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+</head>
+<body>
+    <!-- Header Section -->
+    <header>
+        <nav class="navbar">
+            <div class="logo">
+                <img src="https://i.ibb.co/LxmYLzP/knu-logo.jpg" alt="KNU Logo">
+                <h1>Kazi Nazrul University</h1>
+            </div>
+            <ul class="nav-links">
+                <li><a href="#home" class="active">Home</a></li>
+                <li><a href="#academics">Academics</a></li>
+                <li><a href="#admissions">Admissions</a></li>
+                <li><a href="#faculty">Faculty</a></li>
+                <li><a href="#contact">Contact</a></li>
+                <li><a href="exam-portal.html" class="special-btn">
+                    <i class="fas fa-laptop-code"></i> Exam Portal
+                </a></li>
+                <li><a href="attendance-dashboard.html" class="btn-dynamic btn-primary">
+                    <i class="fas fa-calendar-check"></i>
+                    Attendance
+                </a></li>
+                <li><a href="payslip.html" class="btn-dynamic btn-success">
+                    <i class="fas fa-file-invoice-dollar"></i>
+                    Payslip Generator
+                </a></li>
+                <li><a href="payroll-dashboard.html" class="btn-dynamic btn-warning">
+                    <i class="fas fa-file-invoice-dollar"></i>
+                    Payroll
+                </a></li>
+                <div class="auth-buttons">
+                    <div class="student-auth">
+                        <li><a href="login.html" class="login-btn"><i class="fas fa-user-graduate"></i> Student Login</a></li>
+                        <li><a href="register.html" class="register-btn"><i class="fas fa-user-plus"></i> Student Register</a></li>
+                    </div>
+                    <div class="teacher-auth">
+                        <li><a href="teacher-login.html" class="teacher-btn"><i class="fas fa-chalkboard-teacher"></i> Teacher Login</a></li>
+                        <li><a href="teacher-register.html" class="teacher-register-btn"><i class="fas fa-user-tie"></i> Teacher Register</a></li>
+                    </div>
+                </div>
+            </ul>
+            <div class="hamburger">
+                <span></span>
+                <span></span>
+                <span></span>
+            </div>
+        </nav>
+    </header>
+
+    <!-- Hero Section -->
+    <section id="home" class="hero">
+        <div class="hero-content">
+            <h1>Welcome to Kazi Nazrul University</h1>
+            <p>Empowering minds, Shaping futures</p>
+            <a href="#admissions" class="cta-button">Apply Now</a>
+        </div>
+    </section>
+
+    <!-- Academics Section -->
+    <section id="academics" class="section">
+        <h2>Academic Programs</h2>
+        <div class="programs-grid">
+            <div class="program-card">
+                <i class="fas fa-graduation-cap"></i>
+                <h3>Undergraduate</h3>
+                <p>Explore our diverse range of undergraduate programs designed to provide a strong foundation in your chosen field.</p>
+                <div class="program-details">
+                    <div class="program-stats">
+                        <div class="stat">
+                            <div class="stat-number">15+</div>
+                            <div class="stat-label">Programs</div>
+                        </div>
+                        <div class="stat">
+                            <div class="stat-number">4</div>
+                            <div class="stat-label">Years</div>
+                        </div>
+                        <div class="stat">
+                            <div class="stat-number">500+</div>
+                            <div class="stat-label">Students</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="program-card">
+                <i class="fas fa-book-reader"></i>
+                <h3>Postgraduate</h3>
+                <p>Advanced studies and specialized programs for those seeking to deepen their knowledge and expertise.</p>
+                <div class="program-details">
+                    <div class="program-stats">
+                        <div class="stat">
+                            <div class="stat-number">10+</div>
+                            <div class="stat-label">Programs</div>
+                        </div>
+                        <div class="stat">
+                            <div class="stat-number">2</div>
+                            <div class="stat-label">Years</div>
+                        </div>
+                        <div class="stat">
+                            <div class="stat-number">300+</div>
+                            <div class="stat-label">Students</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="program-card">
+                <i class="fas fa-microscope"></i>
+                <h3>Research</h3>
+                <p>Cutting-edge research opportunities and doctoral programs for advancing knowledge in various disciplines.</p>
+                <div class="program-details">
+                    <div class="program-stats">
+                        <div class="stat">
+                            <div class="stat-number">8+</div>
+                            <div class="stat-label">Programs</div>
+                        </div>
+                        <div class="stat">
+                            <div class="stat-number">3-5</div>
+                            <div class="stat-label">Years</div>
+                        </div>
+                        <div class="stat">
+                            <div class="stat-number">100+</div>
+                            <div class="stat-label">Researchers</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Admissions Section -->
+    <section id="admissions" class="section">
+        <h2>Admissions</h2>
+        <div class="admission-content">
+            <div class="admission-info">
+                <h3>Join Our University</h3>
+                <p>Take the first step towards your future by joining one of India's premier educational institutions. We offer a comprehensive admission process designed to identify and nurture talent.</p>
+                <ul>
+                    <li>Online Application Process</li>
+                    <li>Merit-Based Admissions</li>
+                    <li>Scholarship Opportunities</li>
+                    <li>Financial Aid Available</li>
+                    <li>International Student Support</li>
+                </ul>
+                <a href="register.html" class="admission-btn">Apply Now</a>
+            </div>
+            <div class="admission-features">
+                <div class="feature-card">
+                    <i class="fas fa-calendar-alt"></i>
+                    <h4>Key Dates</h4>
+                    <p>Application Deadline: July 31, 2025<br>
+                    Academic Year Starts: August 2025</p>
+                </div>
+                <div class="feature-card">
+                    <i class="fas fa-file-alt"></i>
+                    <h4>Requirements</h4>
+                    <p>Academic Transcripts<br>
+                    Entrance Test Scores<br>
+                    Letter of Recommendation</p>
+                </div>
+                <div class="feature-card">
+                    <i class="fas fa-medal"></i>
+                    <h4>Scholarships</h4>
+                    <p>Merit-based Scholarships<br>
+                    Sports Excellence Awards<br>
+                    Need-based Financial Aid</p>
+                </div>
+                <div class="feature-card">
+                    <i class="fas fa-users"></i>
+                    <h4>Support</h4>
+                    <p>Admission Counseling<br>
+                    Campus Tours<br>
+                    24/7 Help Desk</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Faculty Section -->
+    <section id="faculty" class="section">
+        <h2>Our Faculty</h2>
+        <div class="faculty-grid">
+            <div class="faculty-card">
+                <div class="faculty-image">
+                    <img src="https://images.unsplash.com/photo-1573496359142-b8d87734a5a2?ixlib=rb-1.2.1&auto=format&fit=crop&w=600&q=80" alt="Dr. Sarah Johnson">
+                </div>
+                <div class="faculty-info">
+                    <h3>Dr. Sarah Johnson</h3>
+                    <div class="designation">Professor & Head</div>
+                    <div class="department">Computer Science</div>
+                    <div class="faculty-expertise">
+                        <span class="expertise-tag">AI/ML</span>
+                        <span class="expertise-tag">Data Science</span>
+                        <span class="expertise-tag">Cloud Computing</span>
+                    </div>
+                    <div class="faculty-stats">
+                        <div class="stat-item">
+                            <div class="stat-number">15+</div>
+                            <div class="stat-label">Years</div>
+                        </div>
+                        <div class="stat-item">
+                            <div class="stat-number">50+</div>
+                            <div class="stat-label">Papers</div>
+                        </div>
+                        <div class="stat-item">
+                            <div class="stat-number">25+</div>
+                            <div class="stat-label">Projects</div>
+                        </div>
+                    </div>
+                    <div class="faculty-social">
+                        <a href="#" class="social-link"><i class="fab fa-linkedin-in"></i></a>
+                        <a href="#" class="social-link"><i class="fab fa-twitter"></i></a>
+                        <a href="#" class="social-link"><i class="fas fa-globe"></i></a>
+                    </div>
+                </div>
+            </div>
+
+            <div class="faculty-card">
+                <div class="faculty-image">
+                    <img src="https://images.unsplash.com/photo-1577962917302-cd874c4e31d2?ixlib=rb-1.2.1&auto=format&fit=crop&w=600&q=80" alt="Dr. Michael Chen">
+                </div>
+                <div class="faculty-info">
+                    <h3>Dr. Michael Chen</h3>
+                    <div class="designation">Associate Professor</div>
+                    <div class="department">Electrical Engineering</div>
+                    <div class="faculty-expertise">
+                        <span class="expertise-tag">Robotics</span>
+                        <span class="expertise-tag">IoT</span>
+                        <span class="expertise-tag">Automation</span>
+                    </div>
+                    <div class="faculty-stats">
+                        <div class="stat-item">
+                            <div class="stat-number">12+</div>
+                            <div class="stat-label">Years</div>
+                        </div>
+                        <div class="stat-item">
+                            <div class="stat-number">40+</div>
+                            <div class="stat-label">Papers</div>
+                        </div>
+                        <div class="stat-item">
+                            <div class="stat-number">20+</div>
+                            <div class="stat-label">Patents</div>
+                        </div>
+                    </div>
+                    <div class="faculty-social">
+                        <a href="#" class="social-link"><i class="fab fa-linkedin-in"></i></a>
+                        <a href="#" class="social-link"><i class="fab fa-github"></i></a>
+                        <a href="#" class="social-link"><i class="fas fa-globe"></i></a>
+                    </div>
+                </div>
+            </div>
+
+            <div class="faculty-card">
+                <div class="faculty-image">
+                    <img src="https://images.unsplash.com/photo-1580489944761-15a19d654956?ixlib=rb-1.2.1&auto=format&fit=crop&w=600&q=80" alt="Dr. Emily Martinez">
+                </div>
+                <div class="faculty-info">
+                    <h3>Dr. Emily Martinez</h3>
+                    <div class="designation">Assistant Professor</div>
+                    <div class="department">Biotechnology</div>
+                    <div class="faculty-expertise">
+                        <span class="expertise-tag">Genetics</span>
+                        <span class="expertise-tag">Microbiology</span>
+                        <span class="expertise-tag">Research</span>
+                    </div>
+                    <div class="faculty-stats">
+                        <div class="stat-item">
+                            <div class="stat-number">8+</div>
+                            <div class="stat-label">Years</div>
+                        </div>
+                        <div class="stat-item">
+                            <div class="stat-number">30+</div>
+                            <div class="stat-label">Papers</div>
+                        </div>
+                        <div class="stat-item">
+                            <div class="stat-number">15+</div>
+                            <div class="stat-label">Awards</div>
+                        </div>
+                    </div>
+                    <div class="faculty-social">
+                        <a href="#" class="social-link"><i class="fab fa-linkedin-in"></i></a>
+                        <a href="#" class="social-link"><i class="fab fa-researchgate"></i></a>
+                        <a href="#" class="social-link"><i class="fas fa-globe"></i></a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Contact Section -->
+    <section id="contact" class="section">
+        <h2>Contact Us</h2>
+        <div class="contact-container">
+            <div class="contact-info">
+                <h3>Get in Touch</h3>
+                <ul class="contact-details">
+                    <li>
+                        <i class="fas fa-map-marker-alt"></i>
+                        123 University Avenue, Asansol, West Bengal, India
+                    </li>
+                    <li>
+                        <i class="fas fa-phone"></i>
+                        +91 123 456 7890
+                    </li>
+                    <li>
+                        <i class="fas fa-envelope"></i>
+                        info@kazinazrul.edu
+                    </li>
+                    <li>
+                        <i class="fas fa-clock"></i>
+                        Monday - Friday: 9:00 AM - 5:00 PM
+                    </li>
+                </ul>
+                <div class="social-links">
+                    <a href="#" class="social-link"><i class="fab fa-facebook-f"></i></a>
+                    <a href="#" class="social-link"><i class="fab fa-twitter"></i></a>
+                    <a href="#" class="social-link"><i class="fab fa-linkedin-in"></i></a>
+                    <a href="#" class="social-link"><i class="fab fa-instagram"></i></a>
+                </div>
+                <div class="map-container">
+                    <iframe src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3657.8864936254675!2d86.9516!3d23.5478!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x0%3A0x0!2zMjPCsDMyJzUyLjEiTiA4NsKwNTcnMDUuOCJF!5e0!3m2!1sen!2sin!4v1643825288449!5m2!1sen!2sin" allowfullscreen="" loading="lazy"></iframe>
+                </div>
+            </div>
+            <div class="contact-form">
+                <h3>Send us a Message</h3>
+                <form id="contactForm">
+                    <div class="form-group">
+                        <label for="name">Full Name</label>
+                        <input type="text" id="name" class="form-control" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="email">Email Address</label>
+                        <input type="email" id="email" class="form-control" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="subject">Subject</label>
+                        <input type="text" id="subject" class="form-control" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="message">Message</label>
+                        <textarea id="message" class="form-control" rows="5" required></textarea>
+                    </div>
+                    <button type="submit" class="contact-btn">
+                        <i class="fas fa-paper-plane"></i> Send Message
+                    </button>
+                </form>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer>
+        <div class="footer-content">
+            <div class="footer-section">
+                <h3>Quick Links</h3>
+                <ul>
+                    <li><a href="#home">Home</a></li>
+                    <li><a href="#academics">Academics</a></li>
+                    <li><a href="#admissions">Admissions</a></li>
+                    <li><a href="#faculty">Faculty</a></li>
+                </ul>
+            </div>
+            <div class="footer-section">
+                <h3>Connect With Us</h3>
+                <div class="social-links">
+                    <a href="#"><i class="fab fa-facebook"></i></a>
+                    <a href="#"><i class="fab fa-twitter"></i></a>
+                    <a href="#"><i class="fab fa-linkedin"></i></a>
+                    <a href="#"><i class="fab fa-instagram"></i></a>
+                </div>
+            </div>
+        </div>
+        <div class="footer-bottom">
+            <p>&copy; 2025 Kazi Nazrul University. All rights reserved.</p>
+        </div>
+    </footer>
+
+    <script src="script.js"></script>
+</body>
+</html>

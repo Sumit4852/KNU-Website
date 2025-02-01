@@ -1,0 +1,657 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Attendance Dashboard - Kazi Nazrul University</title>
+    <link rel="stylesheet" href="styles.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <!-- Add html2pdf library -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js"></script>
+</head>
+<body>
+    <div class="dashboard-container">
+        <!-- Dashboard Header -->
+        <header class="dashboard-header">
+            <h1><i class="fas fa-calendar-check"></i> Attendance Dashboard</h1>
+            <div class="date-picker">
+                <input type="date" id="attendanceDate" class="btn-dynamic btn-secondary">
+            </div>
+        </header>
+
+        <!-- Dashboard Tabs -->
+        <div class="dashboard-tabs">
+            <button class="btn-dynamic btn-primary tab-btn active" onclick="switchTab('student')">
+                <i class="fas fa-user-graduate"></i>
+                Student Attendance
+            </button>
+            <button class="btn-dynamic btn-primary tab-btn" onclick="switchTab('teacher')">
+                <i class="fas fa-chalkboard-teacher"></i>
+                Teacher Attendance
+            </button>
+        </div>
+
+        <!-- Quick Stats -->
+        <div class="stats-container">
+            <div class="stat-card">
+                <i class="fas fa-users"></i>
+                <div class="stat-info">
+                    <h3>Total Present</h3>
+                    <p id="totalPresent">85%</p>
+                </div>
+            </div>
+            <div class="stat-card">
+                <i class="fas fa-user-times"></i>
+                <div class="stat-info">
+                    <h3>Total Absent</h3>
+                    <p id="totalAbsent">15%</p>
+                </div>
+            </div>
+            <div class="stat-card">
+                <i class="fas fa-clock"></i>
+                <div class="stat-info">
+                    <h3>Late Arrivals</h3>
+                    <p id="totalLate">5%</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- Student Attendance Section -->
+        <div id="studentTab" class="attendance-section active">
+            <div class="section-header">
+                <h2>Student Attendance</h2>
+                <div class="header-actions">
+                    <div class="filter-group">
+                        <select class="btn-dynamic btn-secondary" id="courseFilter">
+                            <option value="">All Courses</option>
+                            <option value="btech">B.Tech</option>
+                            <option value="mtech">M.Tech</option>
+                            <option value="bsc">B.Sc</option>
+                            <option value="msc">M.Sc</option>
+                        </select>
+                        <select class="btn-dynamic btn-secondary" id="yearFilter">
+                            <option value="">All Years</option>
+                            <option value="1">1st Year</option>
+                            <option value="2">2nd Year</option>
+                            <option value="3">3rd Year</option>
+                            <option value="4">4th Year</option>
+                        </select>
+                        <select class="btn-dynamic btn-secondary" id="semesterFilter">
+                            <option value="">All Semesters</option>
+                            <option value="1">1st Semester</option>
+                            <option value="2">2nd Semester</option>
+                            <option value="3">3rd Semester</option>
+                            <option value="4">4th Semester</option>
+                            <option value="5">5th Semester</option>
+                            <option value="6">6th Semester</option>
+                            <option value="7">7th Semester</option>
+                            <option value="8">8th Semester</option>
+                        </select>
+                        <select class="btn-dynamic btn-secondary" id="departmentFilter">
+                            <option value="">All Departments</option>
+                            <option value="cse">Computer Science</option>
+                            <option value="ece">Electronics</option>
+                            <option value="me">Mechanical</option>
+                            <option value="ce">Civil</option>
+                            <option value="physics">Physics</option>
+                            <option value="chemistry">Chemistry</option>
+                        </select>
+                    </div>
+                    <div class="action-group">
+                        <button class="btn-dynamic btn-success" onclick="markAllPresent('student')">
+                            <i class="fas fa-check-double"></i>
+                            Mark All Present
+                        </button>
+                        <button class="btn-dynamic btn-warning" onclick="exportAttendance('student')">
+                            <i class="fas fa-file-export"></i>
+                            Export Report
+                        </button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Attendance Statistics Cards -->
+            <div class="attendance-stats">
+                <div class="stat-card">
+                    <i class="fas fa-user-check"></i>
+                    <div class="stat-info">
+                        <h3>Today's Attendance</h3>
+                        <p id="todayAttendance">85%</p>
+                    </div>
+                </div>
+                <div class="stat-card">
+                    <i class="fas fa-calendar-alt"></i>
+                    <div class="stat-info">
+                        <h3>Monthly Average</h3>
+                        <p id="monthlyAverage">78%</p>
+                    </div>
+                </div>
+                <div class="stat-card">
+                    <i class="fas fa-exclamation-triangle"></i>
+                    <div class="stat-info">
+                        <h3>Low Attendance</h3>
+                        <p id="lowAttendance">12</p>
+                        <span class="stat-subtitle">Students below 75%</span>
+                    </div>
+                </div>
+            </div>
+
+            <div class="attendance-table">
+                <table>
+                    <thead>
+                        <tr>
+                            <th>Roll No</th>
+                            <th>Student Name</th>
+                            <th>Course</th>
+                            <th>Year</th>
+                            <th>Semester</th>
+                            <th>Department</th>
+                            <th>Time In</th>
+                            <th>Overall %</th>
+                            <th>Status</th>
+                            <th>Actions</th>
+                        </tr>
+                    </thead>
+                    <tbody id="studentAttendanceBody">
+                        <!-- Sample Student Rows -->
+                        <tr>
+                            <td>CSE001</td>
+                            <td>
+                                <div class="student-info">
+                                    <img src="https://i.pravatar.cc/150?img=1" alt="Student">
+                                    <div>
+                                        <strong>John Doe</strong>
+                                        <span class="student-email">john.doe@knu.edu</span>
+                                    </div>
+                                </div>
+                            </td>
+                            <td>B.Tech</td>
+                            <td>2nd Year</td>
+                            <td>3rd Sem</td>
+                            <td>Computer Science</td>
+                            <td>09:00 AM</td>
+                            <td>
+                                <div class="attendance-progress">
+                                    <div class="progress-bar" style="width: 85%">85%</div>
+                                </div>
+                            </td>
+                            <td>
+                                <span class="status-badge present">Present</span>
+                            </td>
+                            <td>
+                                <div class="btn-group">
+                                    <button class="btn-dynamic btn-success btn-sm" onclick="markAttendance(this, 'present')" title="Mark Present">
+                                        <i class="fas fa-check"></i>
+                                    </button>
+                                    <button class="btn-dynamic btn-warning btn-sm" onclick="markAttendance(this, 'late')" title="Mark Late">
+                                        <i class="fas fa-clock"></i>
+                                    </button>
+                                    <button class="btn-dynamic btn-danger btn-sm" onclick="markAttendance(this, 'absent')" title="Mark Absent">
+                                        <i class="fas fa-times"></i>
+                                    </button>
+                                    <button class="btn-dynamic btn-info btn-sm" onclick="viewHistory(this)" title="View History">
+                                        <i class="fas fa-history"></i>
+                                    </button>
+                                </div>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>ECE002</td>
+                            <td>
+                                <div class="student-info">
+                                    <img src="https://i.pravatar.cc/150?img=2" alt="Student">
+                                    <div>
+                                        <strong>Jane Smith</strong>
+                                        <span class="student-email">jane.smith@knu.edu</span>
+                                    </div>
+                                </div>
+                            </td>
+                            <td>B.Tech</td>
+                            <td>3rd Year</td>
+                            <td>5th Sem</td>
+                            <td>Electronics</td>
+                            <td>08:45 AM</td>
+                            <td>
+                                <div class="attendance-progress">
+                                    <div class="progress-bar" style="width: 92%">92%</div>
+                                </div>
+                            </td>
+                            <td>
+                                <span class="status-badge present">Present</span>
+                            </td>
+                            <td>
+                                <div class="btn-group">
+                                    <button class="btn-dynamic btn-success btn-sm" onclick="markAttendance(this, 'present')" title="Mark Present">
+                                        <i class="fas fa-check"></i>
+                                    </button>
+                                    <button class="btn-dynamic btn-warning btn-sm" onclick="markAttendance(this, 'late')" title="Mark Late">
+                                        <i class="fas fa-clock"></i>
+                                    </button>
+                                    <button class="btn-dynamic btn-danger btn-sm" onclick="markAttendance(this, 'absent')" title="Mark Absent">
+                                        <i class="fas fa-times"></i>
+                                    </button>
+                                    <button class="btn-dynamic btn-info btn-sm" onclick="viewHistory(this)" title="View History">
+                                        <i class="fas fa-history"></i>
+                                    </button>
+                                </div>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+
+            <!-- Attendance History Modal -->
+            <div id="historyModal" class="modal">
+                <div class="modal-content">
+                    <span class="close">&times;</span>
+                    <div class="history-header">
+                        <h2>Attendance History</h2>
+                        <div class="student-profile">
+                            <img src="" alt="Student" id="historyStudentImage">
+                            <div>
+                                <h3 id="historyStudentName"></h3>
+                                <p id="historyStudentDetails"></p>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="history-stats">
+                        <div class="history-stat">
+                            <h4>Present</h4>
+                            <p id="historyPresent">85%</p>
+                        </div>
+                        <div class="history-stat">
+                            <h4>Absent</h4>
+                            <p id="historyAbsent">10%</p>
+                        </div>
+                        <div class="history-stat">
+                            <h4>Late</h4>
+                            <p id="historyLate">5%</p>
+                        </div>
+                    </div>
+                    <div class="history-calendar" id="attendanceCalendar"></div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Teacher Attendance Section -->
+        <div id="teacherTab" class="attendance-section">
+            <div class="section-header">
+                <h2><i class="fas fa-chalkboard-teacher"></i> Teacher Attendance & Payroll</h2>
+                <div class="header-actions">
+                    <div class="filter-group">
+                        <select class="btn-dynamic btn-secondary" id="teacherDepartmentFilter">
+                            <option value="">All Departments</option>
+                            <option value="cse">Computer Science</option>
+                            <option value="ece">Electronics</option>
+                            <option value="me">Mechanical</option>
+                            <option value="ce">Civil</option>
+                            <option value="physics">Physics</option>
+                            <option value="chemistry">Chemistry</option>
+                        </select>
+                        <select class="btn-dynamic btn-secondary" id="teacherStatusFilter">
+                            <option value="">All Status</option>
+                            <option value="fulltime">Full Time</option>
+                            <option value="parttime">Part Time</option>
+                            <option value="visiting">Visiting</option>
+                        </select>
+                    </div>
+                    <div class="action-group">
+                        <button class="btn-dynamic btn-success" onclick="markAllPresent('teacher')">
+                            <i class="fas fa-check-double"></i> Mark All Present
+                        </button>
+                        <button class="btn-dynamic btn-warning" onclick="generatePayroll()">
+                            <i class="fas fa-file-invoice-dollar"></i> Generate Payroll
+                        </button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Teacher Stats -->
+            <div class="stats-container">
+                <div class="stat-card">
+                    <i class="fas fa-user-check"></i>
+                    <div class="stat-info">
+                        <h3>Present Today</h3>
+                        <p id="teacherPresent">92%</p>
+                    </div>
+                </div>
+                <div class="stat-card">
+                    <i class="fas fa-money-check-alt"></i>
+                    <div class="stat-info">
+                        <h3>Total Payroll</h3>
+                        <p id="totalPayroll">₹8,45,000</p>
+                    </div>
+                </div>
+                <div class="stat-card">
+                    <i class="fas fa-clock"></i>
+                    <div class="stat-info">
+                        <h3>Working Hours</h3>
+                        <p id="workingHours">168 hrs</p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Teacher Attendance Table -->
+            <div class="attendance-table">
+                <table>
+                    <thead>
+                        <tr>
+                            <th>ID</th>
+                            <th>Teacher</th>
+                            <th>Department</th>
+                            <th>Status</th>
+                            <th>Time In</th>
+                            <th>Working Hours</th>
+                            <th>Monthly Attendance</th>
+                            <th>Actions</th>
+                        </tr>
+                    </thead>
+                    <tbody id="teacherAttendanceBody">
+                        <!-- Sample Teacher Row -->
+                        <tr>
+                            <td>TCH001</td>
+                            <td>
+                                <div class="teacher-info">
+                                    <img src="https://i.pravatar.cc/150?img=3" alt="Teacher">
+                                    <div>
+                                        <strong>Dr. Sarah Johnson</strong>
+                                        <span class="designation">Associate Professor</span>
+                                    </div>
+                                </div>
+                            </td>
+                            <td>Computer Science</td>
+                            <td><span class="status-badge present">Present</span></td>
+                            <td>08:30 AM</td>
+                            <td>42/42 hrs</td>
+                            <td>
+                                <div class="attendance-progress">
+                                    <div class="progress-bar" style="width: 95%">95%</div>
+                                </div>
+                            </td>
+                            <td>
+                                <div class="btn-group">
+                                    <button class="btn-dynamic btn-success btn-sm" onclick="markAttendance(this, 'present')" title="Mark Present">
+                                        <i class="fas fa-check"></i>
+                                    </button>
+                                    <button class="btn-dynamic btn-warning btn-sm" onclick="markAttendance(this, 'late')" title="Mark Late">
+                                        <i class="fas fa-clock"></i>
+                                    </button>
+                                    <button class="btn-dynamic btn-info btn-sm" onclick="viewPayslip('TCH001')" title="View Payslip">
+                                        <i class="fas fa-file-invoice-dollar"></i>
+                                    </button>
+                                </div>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+
+            <!-- Payslip Modal -->
+            <div id="payslipModal" class="modal">
+                <div class="modal-content payslip-content">
+                    <span class="close">&times;</span>
+                    <div class="payslip" id="payslipContent">
+                        <div class="payslip-header">
+                            <img src="university-logo.png" alt="University Logo" class="university-logo">
+                            <h2>Kazi Nazrul University</h2>
+                            <h3>Salary Slip - <span id="payslipMonth">February 2025</span></h3>
+                        </div>
+                        <div class="payslip-details">
+                            <div class="employee-details">
+                                <div class="detail-row">
+                                    <span>Employee ID:</span>
+                                    <span id="empId">TCH001</span>
+                                </div>
+                                <div class="detail-row">
+                                    <span>Name:</span>
+                                    <span id="empName">Dr. Sarah Johnson</span>
+                                </div>
+                                <div class="detail-row">
+                                    <span>Department:</span>
+                                    <span id="empDept">Computer Science</span>
+                                </div>
+                                <div class="detail-row">
+                                    <span>Designation:</span>
+                                    <span id="empDesignation">Associate Professor</span>
+                                </div>
+                            </div>
+                            <div class="salary-breakdown">
+                                <div class="salary-section">
+                                    <h4>Earnings</h4>
+                                    <div class="detail-row">
+                                        <span>Basic Pay:</span>
+                                        <span id="basicPay">₹75,000</span>
+                                    </div>
+                                    <div class="detail-row">
+                                        <span>DA:</span>
+                                        <span id="da">₹22,500</span>
+                                    </div>
+                                    <div class="detail-row">
+                                        <span>HRA:</span>
+                                        <span id="hra">₹15,000</span>
+                                    </div>
+                                    <div class="detail-row">
+                                        <span>Special Allowance:</span>
+                                        <span id="specialAllowance">₹10,000</span>
+                                    </div>
+                                </div>
+                                <div class="salary-section">
+                                    <h4>Deductions</h4>
+                                    <div class="detail-row">
+                                        <span>PF:</span>
+                                        <span id="pf">₹9,000</span>
+                                    </div>
+                                    <div class="detail-row">
+                                        <span>Tax:</span>
+                                        <span id="tax">₹12,500</span>
+                                    </div>
+                                    <div class="detail-row">
+                                        <span>Professional Tax:</span>
+                                        <span id="profTax">₹200</span>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="salary-total">
+                                <div class="detail-row total">
+                                    <span>Net Salary:</span>
+                                    <span id="netSalary">₹100,800</span>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="payslip-footer">
+                            <p>This is a computer-generated payslip and does not require a signature.</p>
+                            <div class="payslip-actions">
+                                <button class="btn-dynamic btn-primary" onclick="downloadPayslip()">
+                                    <i class="fas fa-download"></i> Download PDF
+                                </button>
+                                <button class="btn-dynamic btn-info" onclick="sharePayslip()">
+                                    <i class="fas fa-share-alt"></i> Share
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <script>
+            // Switch between student and teacher tabs
+            function switchTab(tab) {
+                document.querySelectorAll('.attendance-section').forEach(section => {
+                    section.classList.remove('active');
+                });
+                document.querySelectorAll('.tab-btn').forEach(btn => {
+                    btn.classList.remove('active');
+                });
+                document.getElementById(tab + 'Tab').classList.add('active');
+                event.currentTarget.classList.add('active');
+            }
+
+            // Mark attendance function
+            function markAttendance(button, status) {
+                const row = button.closest('tr');
+                const statusCell = row.querySelector('.status-badge');
+                statusCell.className = 'status-badge ' + status;
+                statusCell.textContent = status.charAt(0).toUpperCase() + status.slice(1);
+                
+                // Add animation to the button
+                button.classList.add('btn-loading');
+                setTimeout(() => {
+                    button.classList.remove('btn-loading');
+                    updateStats();
+                }, 500);
+            }
+
+            // Mark all present function
+            function markAllPresent(type) {
+                const tbody = document.getElementById(type + 'AttendanceBody');
+                const rows = tbody.getElementsByTagName('tr');
+                
+                Array.from(rows).forEach(row => {
+                    const statusCell = row.querySelector('.status-badge');
+                    statusCell.className = 'status-badge present';
+                    statusCell.textContent = 'Present';
+                });
+                
+                updateStats();
+            }
+
+            // Export attendance report
+            function exportAttendance(type) {
+                const button = event.currentTarget;
+                button.classList.add('btn-loading');
+                setTimeout(() => {
+                    button.classList.remove('btn-loading');
+                    alert('Attendance report exported successfully!');
+                }, 1000);
+            }
+
+            // Update attendance statistics
+            function updateStats() {
+                const activeTab = document.querySelector('.attendance-section.active');
+                const total = activeTab.querySelectorAll('tbody tr').length;
+                const present = activeTab.querySelectorAll('.status-badge.present').length;
+                const late = activeTab.querySelectorAll('.status-badge.late').length;
+                
+                document.getElementById('totalPresent').textContent = Math.round((present / total) * 100) + '%';
+                document.getElementById('totalAbsent').textContent = Math.round(((total - present - late) / total) * 100) + '%';
+                document.getElementById('totalLate').textContent = Math.round((late / total) * 100) + '%';
+            }
+
+            // Enhanced filter functionality
+            function applyFilters() {
+                const course = document.getElementById('courseFilter').value;
+                const year = document.getElementById('yearFilter').value;
+                const semester = document.getElementById('semesterFilter').value;
+                const department = document.getElementById('departmentFilter').value;
+
+                const rows = document.querySelectorAll('#studentAttendanceBody tr');
+                rows.forEach(row => {
+                    const courseMatch = !course || row.children[2].textContent === course;
+                    const yearMatch = !year || row.children[3].textContent.includes(year);
+                    const semesterMatch = !semester || row.children[4].textContent.includes(semester);
+                    const departmentMatch = !department || row.children[5].textContent === department;
+
+                    row.style.display = courseMatch && yearMatch && semesterMatch && departmentMatch ? '' : 'none';
+                });
+
+                updateStats();
+            }
+
+            // Add event listeners to filters
+            document.querySelectorAll('.filter-group select').forEach(select => {
+                select.addEventListener('change', applyFilters);
+            });
+
+            // View attendance history
+            function viewHistory(button) {
+                const row = button.closest('tr');
+                const studentName = row.querySelector('.student-info strong').textContent;
+                const studentImage = row.querySelector('.student-info img').src;
+                const studentDetails = `${row.children[2].textContent} | ${row.children[3].textContent} | ${row.children[5].textContent}`;
+
+                document.getElementById('historyStudentName').textContent = studentName;
+                document.getElementById('historyStudentImage').src = studentImage;
+                document.getElementById('historyStudentDetails').textContent = studentDetails;
+
+                const modal = document.getElementById('historyModal');
+                modal.style.display = 'block';
+            }
+
+            // Close modal
+            document.querySelectorAll('.close').forEach(closeBtn => {
+                closeBtn.onclick = function() {
+                    this.closest('.modal').style.display = 'none';
+                }
+            });
+
+            // Initialize with current date
+            document.getElementById('attendanceDate').valueAsDate = new Date();
+
+            // Payroll System Functions
+            function viewPayslip(teacherId) {
+                // Fetch teacher data and populate payslip
+                const modal = document.getElementById('payslipModal');
+                modal.style.display = 'block';
+                
+                // Update payslip month
+                const date = new Date();
+                const monthNames = ["January", "February", "March", "April", "May", "June",
+                    "July", "August", "September", "October", "November", "December"];
+                document.getElementById('payslipMonth').textContent = `${monthNames[date.getMonth()]} ${date.getFullYear()}`;
+            }
+
+            function downloadPayslip() {
+                // Create PDF using html2pdf or similar library
+                const element = document.getElementById('payslipContent');
+                const opt = {
+                    margin: 1,
+                    filename: 'payslip.pdf',
+                    image: { type: 'jpeg', quality: 0.98 },
+                    html2canvas: { scale: 2 },
+                    jsPDF: { unit: 'in', format: 'letter', orientation: 'portrait' }
+                };
+
+                // Actually download the PDF
+                html2pdf().set(opt).from(element).save();
+            }
+
+            function sharePayslip() {
+                // Check if Web Share API is supported
+                if (navigator.share) {
+                    navigator.share({
+                        title: 'Payslip',
+                        text: 'Monthly Payslip from Kazi Nazrul University',
+                        url: window.location.href
+                    })
+                    .catch(console.error);
+                } else {
+                    // Fallback for browsers that don't support Web Share API
+                    const payslipLink = window.location.href;
+                    navigator.clipboard.writeText(payslipLink)
+                        .then(() => alert('Payslip link copied to clipboard!'))
+                        .catch(console.error);
+                }
+            }
+
+            function generatePayroll() {
+                // Calculate payroll for all teachers
+                const button = event.target;
+                button.classList.add('btn-loading');
+                
+                setTimeout(() => {
+                    button.classList.remove('btn-loading');
+                    alert('Payroll generated successfully for all teachers!');
+                    updatePayrollStats();
+                }, 2000);
+            }
+
+            function updatePayrollStats() {
+                // Update payroll statistics
+                document.getElementById('totalPayroll').textContent = '₹8,45,000';
+                document.getElementById('workingHours').textContent = '168 hrs';
+            }
+        </script>
+    </div>
+</body>
+</html>
